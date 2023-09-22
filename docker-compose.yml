@@ -1,0 +1,16 @@
+version: '3.2'
+services:
+ db4:
+    build: .
+    image: mcmoe/mssqldocker:v2017.CU12.1
+    environment:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: 1Secure*Password1
+      MSSQL_DB: GestionBrasserie
+      MSSQL_USER: Asma
+      MSSQL_PASSWORD: 1Secure*Password1
+    ports:
+      - "1433:1433"
+    container_name: mssqldev4
+    volumes:
+      - "./mss_data4:/data:rw"
