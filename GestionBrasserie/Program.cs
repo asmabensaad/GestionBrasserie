@@ -1,9 +1,17 @@
+using GestionBrasserie.Models;
+using GestionBrasserie.Services;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
+var connectionString = builder.Configuration.GetConnectionString("GestionBrasserie");
+builder.Services.AddDbContext<GestionBrasserieDbContext>(options =>
+    options.UseSqlServer(builder.Configuration["ConnectionStrings:GestionBrasserie"]));
+
+builder.Services.AddScoped<IBrasserieService, BrasserieService>();
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
