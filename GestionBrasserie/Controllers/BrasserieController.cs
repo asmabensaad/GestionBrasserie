@@ -15,7 +15,12 @@ public class BrasserieController : ControllerBase
             _brasserieService = brassService;
         }
         
-        
+        /// <summary>
+        /// biere a ajouter par brasseur
+        /// </summary>
+        /// <param name="brasserieId"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost("{brasserieId}/biere")]
         public IActionResult AddBiere(int brasserieId, [FromBody] Biere model)
         {
@@ -24,7 +29,7 @@ public class BrasserieController : ControllerBase
                 return BadRequest(ModelState);
             }
 
-            
+            //verifier si le brasserie existe ou non
             var brasserie = _brasserieService.GetBrasseurById(brasserieId);
 
             if (brasserie == null)
@@ -46,10 +51,15 @@ public class BrasserieController : ControllerBase
 
             return Ok("Biere ajoutée avec succès");
         }
+        /// <summary>
+        /// Ajouter biere 
+        /// </summary>
+        /// <param name="nouvelleBiere"></param>
+        /// <returns></returns>
 
 
 
-        [HttpPost]
+        [HttpPost ("Biere")]
         public IActionResult AjouterBiere([FromBody] Biere nouvelleBiere)
         {
             try
@@ -63,7 +73,54 @@ public class BrasserieController : ControllerBase
             }
         }
 
+        /// <summary>
+        /// biere a supprimer par brasserie
+        /// </summary>
+        /// <param name="idbiere"></param>
+        /// <returns></returns>
+        [HttpDelete("{idbrasserie}/{idbiere}")]
+        
+        public IActionResult DeleteBiere(int idbrasserie, int idbiere)
+        {
+            var brasserie = _brasserieService.GetBrasseurById(idbrasserie);
+            
+            if (brasserie == null)
+            {
+                return NotFound("Brasserie n'existe pas ");
+            }
+            else
+            {
+                try
+                {
+                    _brasserieService.DeleteBiere(idbrasserie,idbiere);
+                    return Ok("biére supprimé avec succées");
+                }
+                catch (Exception e)
+                {
+                    return BadRequest($"Erreur lors de la suppression de biere {e.Message}");
+                }
+            }
 
-       
+           
+        }
+        /// <summary>
+        /// Get la liste des bieres par Brasserie 
+        /// </summary>
+        /// <param name="brasserieId"></param>
+        /// <returns></returns>
+
+        [HttpGet ("brasserieId")]
+        public IActionResult GetBieresByBrasserie(int brasserieId)
+        {
+            try
+            {
+                var bieres = _brasserieService.GetListbiereparbrasserie(brasserieId);
+                return Ok(bieres);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erreur lors de la recuperation des bieres :{ex.Message}");
+            }
+        }
 
 }
