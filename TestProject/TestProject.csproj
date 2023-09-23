@@ -15,4 +15,8 @@
         <PackageReference Include="MSTest" Version="2.2.10" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\GestionBrasserie\GestionBrasserie.csproj" />
+    </ItemGroup>
+
 </Project>

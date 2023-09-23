@@ -24,7 +24,4 @@ public class Vente
     public decimal MontantTotal { get; set; }
     
     
-    public Grossiste Grossiste { get; set; }
-    
-    public Biere Biere { get; set; }
 }

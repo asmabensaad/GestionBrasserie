@@ -51,14 +51,13 @@ public class BrasserieController : ControllerBase
 
             return Ok("Biere ajoutée avec succès");
         }
+        
         /// <summary>
         /// Ajouter biere 
         /// </summary>
         /// <param name="nouvelleBiere"></param>
         /// <returns></returns>
-
-
-
+        
         [HttpPost ("Biere")]
         public IActionResult AjouterBiere([FromBody] Biere nouvelleBiere)
         {
@@ -76,6 +75,7 @@ public class BrasserieController : ControllerBase
         /// <summary>
         /// biere a supprimer par brasserie
         /// </summary>
+        /// <param name="idbrasserie"></param>
         /// <param name="idbiere"></param>
         /// <returns></returns>
         [HttpDelete("{idbrasserie}/{idbiere}")]
@@ -93,7 +93,7 @@ public class BrasserieController : ControllerBase
                 try
                 {
                     _brasserieService.DeleteBiere(idbrasserie,idbiere);
-                    return Ok("biére supprimé avec succées");
+                    return Ok("biére supprimée avec succées");
                 }
                 catch (Exception e)
                 {

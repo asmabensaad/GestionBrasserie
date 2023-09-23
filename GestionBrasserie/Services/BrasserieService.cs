@@ -23,7 +23,7 @@ public class BrasserieService :IBrasserieService
         }
         else
         {
-            Console.WriteLine("brasserie  n'existe pas");
+            Console.WriteLine("brasserie n'existe pas");
         }
     }
     
@@ -42,6 +42,7 @@ public class BrasserieService :IBrasserieService
         _gestionBrasserieDb.SaveChanges();
        
     }
+    /// <inheritdoc cref="IBrasserieService.DeleteBiere"/>
 
     public void DeleteBiere(int idbrasseur ,int idbiere)
     {
@@ -68,5 +69,50 @@ public class BrasserieService :IBrasserieService
     public void UpdateStock(int idgr, int idstock, int idBiere)
     {
         throw new NotImplementedException();
+    }
+    /// <inheritdoc cref="IBrasserieService.AddVente"/>
+
+    public void AddVente(int idGrossiste, int idBiere, int qteVendue, decimal prixUnitaire, DateTime dateVente)
+    {
+
+        var grossiste = _gestionBrasserieDb.Grossistes.Any(g => g.IdGr == idGrossiste);
+        var biere = _gestionBrasserieDb.Bieres.Any(b => b.BiereId == idBiere);
+
+        var stockGrossiste =
+            _gestionBrasserieDb.StockGrossistes.FirstOrDefault(s => s.BiereId == idBiere && s.IdGr == idGrossiste);
+        if (!biere  || !grossiste || stockGrossiste == null || stockGrossiste.QuantiteStock <qteVendue )
+        {
+            throw new Exception("La biere specifié n'existe pas ou n'est pas disponible dans le stock du grossiste ");
+        }
+        else
+        {
+            var vente = new Vente
+            {
+                IdGr = idGrossiste,
+                BiereId = idBiere,
+                Qtevendu = qteVendue,
+                Prixunitaire = prixUnitaire,
+                DateVente = dateVente,
+                MontantTotal = qteVendue * prixUnitaire
+            };
+            _gestionBrasserieDb.Add(vente);
+            stockGrossiste.QuantiteStock -= qteVendue;
+            _gestionBrasserieDb.SaveChanges();
+
+        }
+
+       
+
+    }
+    public Grossiste? GetGrossisteById(int gr)
+    { 
+        var grossiste = _gestionBrasserieDb.Grossistes.FirstOrDefault(g => g.IdGr == gr);
+        return grossiste;
+    }
+
+    public Biere? GetBiereById(int idbiere)
+    {
+        var biere = _gestionBrasserieDb.Bieres.FirstOrDefault(b => b.BiereId == idbiere);
+        return biere;
     }
 }
