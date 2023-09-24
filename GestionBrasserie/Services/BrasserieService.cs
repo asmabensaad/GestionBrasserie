@@ -2,8 +2,9 @@ using GestionBrasserie.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace GestionBrasserie.Services;
+
 /// <inheritdoc cref="IBrasserieService"/>
-public class BrasserieService :IBrasserieService
+public class BrasserieService : IBrasserieService
 {
     private readonly GestionBrasserieDbContext _gestionBrasserieDb;
 
@@ -11,11 +12,12 @@ public class BrasserieService :IBrasserieService
     {
         _gestionBrasserieDb = gestionBrasserieDb;
     }
+
     /// <inheritdoc cref="IBrasserieService.AddBiere"/>
     public void AddBiere(int brasserieid, Biere biere)
     {
         var brasserie = _gestionBrasserieDb.Brasseries.FirstOrDefault(b => b.Idbrasserie == brasserieid);
-        if(brasserie !=null)
+        if (brasserie != null)
         {
             biere.BrasserieId = brasserieid;
             _gestionBrasserieDb.Bieres.Add(biere);
@@ -26,11 +28,10 @@ public class BrasserieService :IBrasserieService
             Console.WriteLine("brasserie n'existe pas");
         }
     }
-    
+
     /// <inheritdoc cref="IBrasserieService.GetBrassseurById"/>
     public Brasserie GetBrasseurById(int brasseurId)
     {
-     
         var brasserie = _gestionBrasserieDb.Brasseries.FirstOrDefault(b => b.Idbrasserie == brasseurId);
 
         return brasserie;
@@ -40,16 +41,15 @@ public class BrasserieService :IBrasserieService
     {
         _gestionBrasserieDb.Bieres.Add(biere);
         _gestionBrasserieDb.SaveChanges();
-       
     }
-    /// <inheritdoc cref="IBrasserieService.DeleteBiere"/>
 
-    public void DeleteBiere(int idbrasseur ,int idbiere)
+    /// <inheritdoc cref="IBrasserieService.DeleteBiere"/>
+    public void DeleteBiere(int idbrasseur, int idbiere)
     {
         var brasserie = _gestionBrasserieDb.Brasseries.FirstOrDefault(b => b.Idbrasserie == idbrasseur);
-      
+
         var bieretodelete = _gestionBrasserieDb.Bieres.FirstOrDefault(b => b.BiereId == idbiere);
-        if (bieretodelete != null  && brasserie  !=null)
+        if (bieretodelete != null && brasserie != null)
         {
             _gestionBrasserieDb.Bieres.Remove(bieretodelete);
             _gestionBrasserieDb.SaveChanges();
@@ -58,7 +58,6 @@ public class BrasserieService :IBrasserieService
         {
             throw new Exception("biere n'existe pas");
         }
-       
     }
 
     public List<Biere> GetListbiereparbrasserie(int brasserieId)
@@ -66,21 +65,16 @@ public class BrasserieService :IBrasserieService
         return _gestionBrasserieDb.Bieres.Where(b => b.BrasserieId == brasserieId).ToList();
     }
 
-    public void UpdateStock(int idgr, int idstock, int idBiere)
-    {
-        throw new NotImplementedException();
-    }
-    /// <inheritdoc cref="IBrasserieService.AddVente"/>
 
+    /// <inheritdoc cref="IBrasserieService.AddVente"/>
     public void AddVente(int idGrossiste, int idBiere, int qteVendue, decimal prixUnitaire, DateTime dateVente)
     {
-
         var grossiste = _gestionBrasserieDb.Grossistes.Any(g => g.IdGr == idGrossiste);
         var biere = _gestionBrasserieDb.Bieres.Any(b => b.BiereId == idBiere);
 
         var stockGrossiste =
             _gestionBrasserieDb.StockGrossistes.FirstOrDefault(s => s.BiereId == idBiere && s.IdGr == idGrossiste);
-        if (!biere  || !grossiste || stockGrossiste == null || stockGrossiste.QuantiteStock <qteVendue )
+        if (!biere || !grossiste || stockGrossiste == null || stockGrossiste.QuantiteStock < qteVendue)
         {
             throw new Exception("La biere specifié n'existe pas ou n'est pas disponible dans le stock du grossiste ");
         }
@@ -98,14 +92,11 @@ public class BrasserieService :IBrasserieService
             _gestionBrasserieDb.Add(vente);
             stockGrossiste.QuantiteStock -= qteVendue;
             _gestionBrasserieDb.SaveChanges();
-
         }
-
-       
-
     }
+
     public Grossiste? GetGrossisteById(int gr)
-    { 
+    {
         var grossiste = _gestionBrasserieDb.Grossistes.FirstOrDefault(g => g.IdGr == gr);
         return grossiste;
     }
@@ -114,5 +105,28 @@ public class BrasserieService :IBrasserieService
     {
         var biere = _gestionBrasserieDb.Bieres.FirstOrDefault(b => b.BiereId == idbiere);
         return biere;
+    }
+
+    /// <inheritdoc cref="IBrasserieService.GetInfoBieres"/>
+    public List<Dictionary<string, object>> GetInfoBieres(List<int> idBieres)
+    {
+        var infoBieres = _gestionBrasserieDb.Bieres.Where(b => idBieres.Contains(b.BiereId))
+            .Select(b => new Dictionary<string, object>
+            {
+                { "IdBiere", b.BiereId },
+                { "nomBiere", b.nomBiere },
+                { "prix", b.prixBiere },
+                { "idBr", b.BrasserieId },
+                { "teneurAlcol", b.TeneurEnAlcool },
+            }).ToList();
+        return infoBieres;
+    }
+
+    /// <inheritdoc cref="IBrasserieService.GetstockGrossiste"/>
+    public StockGrossiste? GetstockGrossiste(int idGr, int idBiere)
+    {
+        var stockgrossiste = _gestionBrasserieDb.StockGrossistes.Include(s => s.Biere)
+            .FirstOrDefault(s => s.IdGr == idGr && s.BiereId == idBiere);
+        return stockgrossiste;
     }
 }

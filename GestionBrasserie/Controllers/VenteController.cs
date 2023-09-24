@@ -15,17 +15,21 @@ public class VenteController :ControllerBase
     {
         _brasserieService = brasserieService;
     }
+    /// <summary>
+    /// ajouter vente
+    /// </summary>
+    /// <param name="vente"></param>
+    /// <returns></returns>
 
 
-    [HttpPost( "ajouter-vente")]
-    public IActionResult AddVente(  [FromBody] Vente vente)
+    [HttpPost("ajouter-vente")]
+    public IActionResult AddVente([FromBody] Vente vente)
     {
-        
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
-        
+
         else
         {
             try
@@ -39,8 +43,64 @@ public class VenteController :ControllerBase
                 return BadRequest($"Erreur lors de l'ajout de vente : {e.Message}");
             }
         }
-        
-      
-         
+    }
+    /// <summary>
+    /// devis client
+    /// </summary>
+    /// <param name="commandeClientModel"></param>
+    /// <returns></returns>
+    [HttpPost("devis-client")]
+    public IActionResult DevisClient([FromBody] CommandeClient commandeClientModel)
+    {
+        try
+        {
+            var grossiste = _brasserieService.GetGrossisteById(commandeClientModel.IdGr);
+            if (grossiste == null)
+            {
+                return BadRequest("Grossiste specifié n'existe pas ");
+            }
+
+            if (commandeClientModel.IdBieres == null || commandeClientModel.IdBieres.Count == 0)
+            {
+                return BadRequest("la commande ne peut pas étre vide");
+            }
+
+            if (commandeClientModel.IdBieres.Distinct().Count() != commandeClientModel.IdBieres.Count)
+            {
+                return BadRequest("Il ne peut y avoir de doublon dans la commande");
+            }
+
+            var infoBieres = _brasserieService.GetInfoBieres(commandeClientModel.IdBieres);
+            foreach (var infoBiere in infoBieres)
+            {
+                int idBiere = (int)infoBiere["IdBiere"];
+                var stockGrossiste = _brasserieService.GetstockGrossiste(commandeClientModel.IdGr, idBiere);
+                if (stockGrossiste == null)
+                {
+                    return BadRequest($"la biere avec l'id {idBiere} n'est pas vendue par le grossiste specifié");
+                }
+            }
+
+            decimal montantTotal = 0;
+            for (int i = 0; i < commandeClientModel.IdBieres.Count; i++)
+            {
+                montantTotal += (decimal)infoBieres[i]["prix"];
+            }
+
+            if (commandeClientModel.IdBieres.Count > 20)
+            {
+                montantTotal *= 0.8m;
+            }
+            else if (commandeClientModel.IdBieres.Count > 10)
+            {
+                montantTotal *= 0.9m;
+            }
+
+            return Ok(new { MontantTotal = montantTotal, Devis = "Devis genere avec succé." });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"Erreur lors de la demande de devis : {ex.Message}");
+        }
     }
 }
