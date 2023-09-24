@@ -1,6 +1,7 @@
 using GestionBrasserie.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using GestionBrasserie.Models;
+using GestionBrasserie.Services;
 namespace TestProject;
 [TestClass]
 public class BrasserieTest
@@ -11,6 +12,8 @@ public class BrasserieTest
     [TestMethod]
     public void A_AddBiere_returnSuccesAjoutIfValidData_returnBadrequest()
     {
+        //Arrange
+        
         
     }
 

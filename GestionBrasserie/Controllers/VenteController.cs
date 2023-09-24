@@ -4,24 +4,23 @@ using Microsoft.AspNetCore.Mvc;
 
 
 namespace GestionBrasserie.Controllers;
+
 [Route("api/[controller]")]
 [ApiController]
-public class VenteController :ControllerBase
+public class VenteController : ControllerBase
 {
-    
     private readonly IBrasserieService _brasserieService;
 
-    public VenteController (IBrasserieService brasserieService)
+    public VenteController(IBrasserieService brasserieService)
     {
         _brasserieService = brasserieService;
     }
+
     /// <summary>
-    /// ajouter vente
+    /// ajout de vente
     /// </summary>
     /// <param name="vente"></param>
     /// <returns></returns>
-
-
     [HttpPost("ajouter-vente")]
     public IActionResult AddVente([FromBody] Vente vente)
     {
@@ -30,22 +29,20 @@ public class VenteController :ControllerBase
             return BadRequest(ModelState);
         }
 
-        else
+        try
         {
-            try
-            {
-                _brasserieService.AddVente(vente.IdGr, vente.BiereId, vente.Qtevendu, vente.Prixunitaire,
-                    vente.DateVente);
-                return Ok("Vente ajoutée avec succès !");
-            }
-            catch (Exception e)
-            {
-                return BadRequest($"Erreur lors de l'ajout de vente : {e.Message}");
-            }
+            _brasserieService.AddVente(vente.IdGr, vente.BiereId, vente.Qtevendu, vente.Prixunitaire,
+                vente.DateVente);
+            return Ok("Vente ajoutée avec succès !");
+        }
+        catch (Exception e)
+        {
+            return BadRequest($"Erreur lors de l'ajout de vente : {e.Message}");
         }
     }
+
     /// <summary>
-    /// devis client
+    /// devis de client
     /// </summary>
     /// <param name="commandeClientModel"></param>
     /// <returns></returns>
@@ -73,7 +70,7 @@ public class VenteController :ControllerBase
             var infoBieres = _brasserieService.GetInfoBieres(commandeClientModel.IdBieres);
             foreach (var infoBiere in infoBieres)
             {
-                int idBiere = (int)infoBiere["IdBiere"];
+                int idBiere = (int)infoBiere["BiereId"];
                 var stockGrossiste = _brasserieService.GetstockGrossiste(commandeClientModel.IdGr, idBiere);
                 if (stockGrossiste == null)
                 {
@@ -84,7 +81,7 @@ public class VenteController :ControllerBase
             decimal montantTotal = 0;
             for (int i = 0; i < commandeClientModel.IdBieres.Count; i++)
             {
-                montantTotal += (decimal)infoBieres[i]["prix"];
+                montantTotal += (decimal)infoBieres[i]["prixBiere"] * commandeClientModel.Quantite[i];
             }
 
             if (commandeClientModel.IdBieres.Count > 20)
@@ -96,7 +93,7 @@ public class VenteController :ControllerBase
                 montantTotal *= 0.9m;
             }
 
-            return Ok(new { MontantTotal = montantTotal, Devis = "Devis genere avec succé." });
+            return Ok(new { MontantTotal = montantTotal, Devis = "Devis generé avec succé." });
         }
         catch (Exception ex)
         {

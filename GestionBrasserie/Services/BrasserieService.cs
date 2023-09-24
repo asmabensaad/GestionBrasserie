@@ -113,11 +113,10 @@ public class BrasserieService : IBrasserieService
         var infoBieres = _gestionBrasserieDb.Bieres.Where(b => idBieres.Contains(b.BiereId))
             .Select(b => new Dictionary<string, object>
             {
-                { "IdBiere", b.BiereId },
+                { "BiereId", b.BiereId },
                 { "nomBiere", b.nomBiere },
-                { "prix", b.prixBiere },
-                { "idBr", b.BrasserieId },
-                { "teneurAlcol", b.TeneurEnAlcool },
+                { "prixBiere", b.prixBiere },
+                { "TeneurEnAlcool", b.TeneurEnAlcool },
             }).ToList();
         return infoBieres;
     }

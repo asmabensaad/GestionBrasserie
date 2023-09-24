@@ -44,16 +44,17 @@ public interface IBrasserieService
     /// <param name="prixUnitaire"></param>
     /// <param name="dateVente"></param>
     public void AddVente(int idGrossiste, int idBiere, int qteVendue, decimal prixUnitaire, DateTime dateVente);
+
     /// <summary>
     /// obtenir la liste des information des bieres 
     /// </summary>
     /// <param name="idBieres"></param>
     /// <returns></returns>
-
     public List<Dictionary<string, object>> GetInfoBieres(List<int> idBieres);
-    
+
     public Grossiste? GetGrossisteById(int grId);
     public Biere? GetBiereById(int idbiere);
+
     /// <summary>
     /// verifier si le grossiste et la biere en question existe dans la table stock
     /// </summary>

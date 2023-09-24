@@ -85,17 +85,14 @@ public class BrasserieController : ControllerBase
         {
             return NotFound("Brasserie n'existe pas ");
         }
-        else
+        try
         {
-            try
-            {
-                _brasserieService.DeleteBiere(idbrasserie, idbiere);
-                return Ok("biére supprimée avec succées");
-            }
-            catch (Exception e)
-            {
-                return BadRequest($"Erreur lors de la suppression de biere {e.Message}");
-            }
+            _brasserieService.DeleteBiere(idbrasserie, idbiere);
+            return Ok("biére supprimée avec succées");
+        }
+        catch (Exception e)
+        {
+            return BadRequest($"Erreur lors de la suppression de biere {e.Message}");
         }
     }
 

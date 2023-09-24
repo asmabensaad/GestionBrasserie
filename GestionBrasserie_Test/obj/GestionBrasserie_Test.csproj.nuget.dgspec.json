@@ -1,0 +1,165 @@
+{
+  "format": 1,
+  "restore": {
+    "/home/asma/RiderProjects/GestionBrasserie/GestionBrasserie_Test/GestionBrasserie_Test.csproj": {}
+  },
+  "projects": {
+    "/home/asma/RiderProjects/GestionBrasserie/GestionBrasserie/GestionBrasserie.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/asma/RiderProjects/GestionBrasserie/GestionBrasserie/GestionBrasserie.csproj",
+        "projectName": "GestionBrasserie",
+        "projectPath": "/home/asma/RiderProjects/GestionBrasserie/GestionBrasserie/GestionBrasserie.csproj",
+        "packagesPath": "/home/asma/.nuget/packages/",
+        "outputPath": "/home/asma/RiderProjects/GestionBrasserie/GestionBrasserie/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/asma/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[6.0.22, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "target": "Package",
+              "version": "[6.0.22, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[6.0.22, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[6.0.22, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[6.5.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.AspNetCore.App": {
+              "privateAssets": "none"
+            },
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/6.0.122/RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "/home/asma/RiderProjects/GestionBrasserie/GestionBrasserie_Test/GestionBrasserie_Test.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/home/asma/RiderProjects/GestionBrasserie/GestionBrasserie_Test/GestionBrasserie_Test.csproj",
+        "projectName": "GestionBrasserie_Test",
+        "projectPath": "/home/asma/RiderProjects/GestionBrasserie/GestionBrasserie_Test/GestionBrasserie_Test.csproj",
+        "packagesPath": "/home/asma/.nuget/packages/",
+        "outputPath": "/home/asma/RiderProjects/GestionBrasserie/GestionBrasserie_Test/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/asma/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "/home/asma/RiderProjects/GestionBrasserie/GestionBrasserie/GestionBrasserie.csproj": {
+                "projectPath": "/home/asma/RiderProjects/GestionBrasserie/GestionBrasserie/GestionBrasserie.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.NET.Test.Sdk": {
+              "target": "Package",
+              "version": "[16.11.0, )"
+            },
+            "NUnit": {
+              "target": "Package",
+              "version": "[3.13.2, )"
+            },
+            "NUnit3TestAdapter": {
+              "target": "Package",
+              "version": "[4.0.0, )"
+            },
+            "coverlet.collector": {
+              "target": "Package",
+              "version": "[3.1.0, )"
+            },
+            "xunit": {
+              "target": "Package",
+              "version": "[2.5.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/6.0.122/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
